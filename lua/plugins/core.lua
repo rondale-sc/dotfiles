@@ -33,7 +33,19 @@ return {
       "nvim-telescope/telescope-fzf-native.nvim",
       build = "make",
       config = function()
+        require("telescope").load_extension("live_grep_args")
         require("telescope").load_extension("fzf")
+        require("telescope").setup({
+          pickers = {
+            buffers = {
+              mappings = {
+                i = {
+                  ["<c-a>"] = vim.cmd("!normal! I"),
+                },
+              },
+            },
+          },
+        })
       end,
     },
   },
