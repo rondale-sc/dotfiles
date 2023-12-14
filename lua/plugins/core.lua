@@ -1,52 +1,63 @@
 return {
   {
-    "maxmx03/solarized.nvim",
-    lazy = false,
+    -- Theme inspired by Atom
+    "navarasu/onedark.nvim",
     priority = 1000,
     config = function()
-      vim.o.background = "light" -- or 'light'
-
-      vim.cmd.colorscheme("solarized")
+      vim.cmd.colorscheme("onedark")
     end,
   },
   {
-    "nvim-treesitter/nvim-treesitter-textobjects",
+    -- Highlight, edit, and navigate code
+    "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
+    build = ":TSUpdate",
+  },
+  -- for typescript, LazyVim also includes extra specs to properly setup lspconfig,
+  -- treesitter, mason and typescript.nvim. So instead of the above, you can use:
+  { import = "lazyvim.plugins.extras.lang.typescript" },
+
+  -- git configuration
+  { "tpope/vim-fugitive" },
+  { "tpope/vim-rhubarb" },
+  { "tpope/vim-rsi" },
+  { "tpope/vim-eunuch" },
+  { "mustache/vim-mustache-handlebars" },
+  {
+    "nvim-telescope/telescope.nvim",
+    tag = "0.1.5",
+    dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-      require("nvim-treesitter.configs").setup({
-        textobjects = {
-          lsp_interop = {
-            enable = true,
-            border = "none",
-            floating_preview_opts = {},
-            peek_definition_code = {
-              ["<leader>df"] = "@function.outer",
-              ["<leader>dF"] = "@class.outer",
+      local actions = require("telescope.actions")
+
+      require("telescope").setup({
+        defaults = {
+          -- Default configuration for telescope goes here:
+          -- config_key = value,
+          mappings = {
+            i = {
+              ["<C-k>"] = actions.move_selection_previous,
+              ["<C-j>"] = actions.move_selection_next,
             },
           },
         },
       })
     end,
   },
+
   {
-    "telescope.nvim",
-    dependencies = {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      build = "make",
-      config = function()
-        require("telescope").load_extension("live_grep_args")
-        require("telescope").load_extension("fzf")
-        require("telescope").setup({
-          pickers = {
-            buffers = {
-              mappings = {
-                i = {
-                  ["<c-a>"] = vim.cmd("!normal! I"),
-                },
-              },
-            },
-          },
-        })
-      end,
-    },
+    "akinsho/bufferline.nvim",
+    config = function()
+      local bufferline = require("bufferline")
+
+      bufferline.setup({
+        options = {
+          mode = "tabs", -- set to "tabs" to only show tabpages instead
+        },
+      })
+    end,
   },
+  { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 }
