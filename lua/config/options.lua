@@ -29,3 +29,14 @@ vim.o.completeopt = "menuone,noselect"
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+
+-- Ensure :vsplit will open the new pane to the right
+vim.opt.splitright = true
+
+-- Ensure :split will open the new pane below current pane
+vim.opt.splitbelow = true
+
+-- Use visual bel instead of beeping
+vim.opt.visualbell = true
+
+vim.g.foldexpr = "v:lnum==1?'>1':getline(v:lnum)=~'import'?1:nvim_treesitter#foldexpr()"
