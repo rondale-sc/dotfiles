@@ -1,0 +1,187 @@
+# vim:set ft=sh sw=2 sts=2:
+
+[ -e "$SOURCE_DIR" ] || SOURCE_DIR="$HOME/hashrocket"
+export SOURCE_DIR
+
+# DEPRECATED: Use more generic SOURCE_DIR. HASHROCKET_DIR persists as a
+# legacy artifact, and for 3rd-party scripts.
+export HASHROCKET_DIR=$SOURCE_DIR
+
+# Paths for prepending
+#
+for dir in /usr/local/bin "$HOME/bin" .git/safe/../../bin; do
+  case "$PATH:" in
+    *:"$dir":*) PATH="`echo "$PATH"|sed -e "s#:$dir##"`" ;;
+  esac
+  case "$dir" in
+    /*) [ ! -d "$dir" ] || PATH="$dir:$PATH" ;;
+    *) PATH="$dir:$PATH" ;;
+  esac
+done
+
+# Paths for appending
+#
+for dir in /usr/local/sbin /opt/local/sbin /usr/X11/bin; do
+  case ":$PATH:" in
+    *:"$dir":*) ;;
+    *) [ ! -d "$dir" ] || PATH="$PATH:$dir" ;;
+  esac
+done
+
+# Ruby/Rails specific aliases
+#
+alias be='bundle exec'
+alias groutes='bin/rails routes | grep $@'
+alias rerun-cucumber="tmux showb | grep cucumber | awk '{print \$2}' | xargs cucumber"
+alias rerun-rspec="tmux showb | grep rspec | awk '{print \$2}' | xargs rspec"
+alias sc='rails console'
+alias scs='rails console --sandbox'
+alias sdbc='rails dbconsole -p'
+alias ss='rails server'
+
+# Ruby/Rails functions
+#
+twiki () {
+  rake db:migrate && rake db:migrate:redo && rake db:test:prepare
+}
+
+# File management aliases
+#
+alias ..='cd ..'
+alias cd..='cd ..'
+alias l="ls -F -G -lah"
+alias la="ls -a"
+alias ll='ls -l'
+alias lsd='ls -ld *(-/DN)'
+alias md='mkdir -p'
+alias rd='rmdir'
+
+# File management functions
+#
+function l {
+  ls -ld "${1:-$PWD}"/.[^.]*
+}
+
+# Git functions
+#
+if command -v hub >/dev/null; then
+  git() {
+    command hub "$@"
+  }
+fi
+
+# git_prompt_info accepts 0 or 1 arguments (i.e., format string)
+# returns text to add to bash PS1 prompt (includes branch name)
+git_prompt_info () {
+  local g="$(command git rev-parse --git-dir 2>/dev/null)"
+  if [ -n "$g" ]; then
+    local r
+    local b
+    local d
+    local s
+    # Rebasing
+    if [ -d "$g/rebase-apply" ] ; then
+      if test -f "$g/rebase-apply/rebasing" ; then
+        r="|REBASE"
+      fi
+      b="$(command git symbolic-ref HEAD 2>/dev/null)"
+    # Interactive rebase
+    elif [ -f "$g/rebase-merge/interactive" ] ; then
+      r="|REBASE-i"
+      b="$(cat "$g/rebase-merge/head-name")"
+    # Merging
+    elif [ -f "$g/MERGE_HEAD" ] ; then
+      r="|MERGING"
+      b="$(command git symbolic-ref HEAD 2>/dev/null)"
+    else
+      if [ -f "$g/BISECT_LOG" ] ; then
+        r="|BISECTING"
+      fi
+      if ! b="$(command git symbolic-ref HEAD 2>/dev/null)" ; then
+        if ! b="$(command git describe --exact-match HEAD 2>/dev/null)" ; then
+          b="$(cut -c1-7 "$g/HEAD")..."
+        fi
+      fi
+    fi
+
+    # Dirty Branch
+    local newfile='?? '
+    if [ -n "$ZSH_VERSION" ]; then
+      newfile='\?\? '
+    fi
+    d=''
+    s=$(command git status --porcelain 2> /dev/null)
+    [[ $s =~ "$newfile" ]] && d+='+'
+    [[ $s =~ "M " ]] && d+='*'
+    [[ $s =~ "D " ]] && d+='-'
+
+    printf "${1-"(%s) "}" "${b##refs/heads/}$r$d"
+  fi
+}
+
+gcr() {
+  git checkout -b $1 origin/$1
+}
+
+# git reset empty files
+gref() {
+  command git --no-pager diff --cached --stat | command grep "|\s*0$" | awk '{system("command git reset " $1)}'
+}
+
+# git fix up commits
+gfix() {
+  if (($# < 1)); then
+    log_error "Usage:\n";
+    echo "  gfix <git-sha>";
+    return 0;
+  fi
+
+  git_sha=$1;
+  git cat-file -t "${git_sha}"
+  if [[ $? -eq 0 ]]; then
+    git commit --fixup ${git_sha} && git stash && git rebase -i --autosquash ${git_sha}~1 && git stash pop
+  else
+    log_error "Invalid git commit sha: '${git_sha}'";
+  fi
+}
+
+# Git aliases
+#
+alias gap='git add -p'
+alias gb='git branch'
+alias gc='git commit -v'
+alias gca='git commit -a -v'
+alias gcl='git clean -f -d'
+alias gco='git checkout'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gdh='git diff HEAD'
+alias gl='git pull'
+alias glg='git log --graph --oneline --decorate --color --all'
+alias glod='git log --oneline --decorate'
+alias glp='git log -p'
+alias gnap='git add -N --ignore-removal . && gap && gref'
+alias gp='git push'
+alias gplease='git push --force-with-lease'
+alias gpr='git pull --rebase'
+alias gr='git rebase'
+alias gra='git rebase --abort'
+alias grc='git rebase --continue'
+alias grim='git rebase -i master'
+alias gst='git status'
+alias reset-authors='git commit --amend --reset-author -C HEAD'
+
+# Docker aliases
+#
+alias dcu="docker-compose up"
+alias dcud="docker-compose up -d"
+alias dcd="docker-compose down"
+alias dcs="docker-compose stop"
+alias dcp="docker-compose ps"
+alias dcl="docker-compose logs -f"
+alias dcr="docker-compose run"
+alias dce="docker-compose exec"
+
+# Aliases
+#
+alias vi='vim'
