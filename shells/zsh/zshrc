@@ -100,13 +100,6 @@ alias reload='source ~/.zshrc; echo -e "\n\u2699  \e[33mZSH config reloaded\e[0m
 # rvm-install added line:
 if [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then source "$HOME/.rvm/scripts/rvm" ; fi
 
-cuke() {
-  local file="$1"
-  shift
-  cucumber "features/$(basename $file)" $@
-}
-compctl -g '*.feature' -W features cuke
-
 # import local zsh customizations, if present
 zrcl="$HOME/.zshrc.local"
 [[ ! -a $zrcl ]] || source $zrcl
