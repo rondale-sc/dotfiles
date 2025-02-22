@@ -81,8 +81,9 @@ setup-config() {
   copy-dotfile "shells/zsh/zshrc.local" "$HOME/.zshrc.local"
   link-dotfile "shells/zsh/zprofile" "$HOME/.zprofile"
 
-  link-dotfile "tmux.conf" "$HOME/.tmux.conf"
+  link-dotfile "gitconfig" "$HOME/.gitconfig"
 
+  link-dotfile "tmux.conf" "$HOME/.tmux.conf"
 
   if [[ "$OSTYPE" == darwin* ]]; then
   else
