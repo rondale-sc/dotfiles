@@ -96,6 +96,7 @@ export PSQL_EDITOR='vim -c"setf sql"'
 # * Additional aliases are found in `.sharedrc`
 #
 alias reload='source ~/.zshrc; echo -e "\n\u2699  \e[33mZSH config reloaded\e[0m \u2699"'
+alias vim="nvim"
 
 # rvm-install added line:
 if [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then source "$HOME/.rvm/scripts/rvm" ; fi

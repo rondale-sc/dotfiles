@@ -206,7 +206,23 @@ install-requirements() {
       echo "fzf already installed"
     fi
   fi
+
+  # make sure dotvim is setup properly, have to do this after installing the various
+  # required dependencies first (so neovim is installed and up to date)
+  if [[ ! -L $HOME/.config/nvim ]] || [[ $(readlink $HOME/.config/nvim) != $HOME/Code/rondale-sc/nvim ]]; then
+    echo "setting up nvim"
+    rm -rf $HOME/.config/nvim
+
+    git clone https://github.com/rondale-sc/nvim.git $HOME/Code/rondale-sc/nvim
+    ln -s $HOME/Code/rondale-sc/nvim $HOME/.config/nvim
+
+    echo "installing deps"
+    nvim --headless '+Lazy! restore' '+TSUpdate' '+qa'
+  else
+    echo "nvim already setup"
+  fi
 }
+
 
 install-requirements
 setup-config
