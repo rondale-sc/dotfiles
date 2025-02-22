@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: 3
+
+includes:
+  nvim:
+    taskfile: ./taskfiles/nvim.yml
+
+tasks:
+  default:
+    cmd: task -l
+    silent: true
