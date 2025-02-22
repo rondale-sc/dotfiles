@@ -213,7 +213,7 @@ install-requirements() {
     echo "setting up nvim"
     rm -rf $HOME/.config/nvim
 
-    git clone https://github.com/rondale-sc/nvim.git $HOME/Code/rondale-sc/nvim
+    git clone git@github.com:rondale-sc/nvim.git $HOME/Code/rondale-sc/nvim
     ln -s $HOME/Code/rondale-sc/nvim $HOME/.config/nvim
 
     echo "installing deps"
