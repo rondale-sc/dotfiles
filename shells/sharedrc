@@ -1,17 +1,17 @@
 # vim:set ft=sh sw=2 sts=2:
 
-[ -e "$SOURCE_DIR" ] || SOURCE_DIR="$HOME/hashrocket"
+[ -e "$SOURCE_DIR" ] || SOURCE_DIR="$HOME/Code/rondale-sc/dotfiles"
 export SOURCE_DIR
 
 # Paths for prepending
 #
 for dir in /usr/local/bin "$HOME/bin" .git/safe/../../bin; do
   case "$PATH:" in
-    *:"$dir":*) PATH="`echo "$PATH"|sed -e "s#:$dir##"`" ;;
+  *:"$dir":*) PATH="$(echo "$PATH" | sed -e "s#:$dir##")" ;;
   esac
   case "$dir" in
-    /*) [ ! -d "$dir" ] || PATH="$dir:$PATH" ;;
-    *) PATH="$dir:$PATH" ;;
+  /*) [ ! -d "$dir" ] || PATH="$dir:$PATH" ;;
+  *) PATH="$dir:$PATH" ;;
   esac
 done
 
@@ -19,8 +19,8 @@ done
 #
 for dir in /usr/local/sbin /opt/local/sbin /usr/X11/bin; do
   case ":$PATH:" in
-    *:"$dir":*) ;;
-    *) [ ! -d "$dir" ] || PATH="$PATH:$dir" ;;
+  *:"$dir":*) ;;
+  *) [ ! -d "$dir" ] || PATH="$PATH:$dir" ;;
   esac
 done
 
@@ -51,7 +51,7 @@ fi
 
 # git_prompt_info accepts 0 or 1 arguments (i.e., format string)
 # returns text to add to bash PS1 prompt (includes branch name)
-git_prompt_info () {
+git_prompt_info() {
   local g="$(command git rev-parse --git-dir 2>/dev/null)"
   if [ -n "$g" ]; then
     local r
@@ -59,25 +59,25 @@ git_prompt_info () {
     local d
     local s
     # Rebasing
-    if [ -d "$g/rebase-apply" ] ; then
-      if test -f "$g/rebase-apply/rebasing" ; then
+    if [ -d "$g/rebase-apply" ]; then
+      if test -f "$g/rebase-apply/rebasing"; then
         r="|REBASE"
       fi
       b="$(command git symbolic-ref HEAD 2>/dev/null)"
     # Interactive rebase
-    elif [ -f "$g/rebase-merge/interactive" ] ; then
+    elif [ -f "$g/rebase-merge/interactive" ]; then
       r="|REBASE-i"
       b="$(cat "$g/rebase-merge/head-name")"
     # Merging
-    elif [ -f "$g/MERGE_HEAD" ] ; then
+    elif [ -f "$g/MERGE_HEAD" ]; then
       r="|MERGING"
       b="$(command git symbolic-ref HEAD 2>/dev/null)"
     else
-      if [ -f "$g/BISECT_LOG" ] ; then
+      if [ -f "$g/BISECT_LOG" ]; then
         r="|BISECTING"
       fi
-      if ! b="$(command git symbolic-ref HEAD 2>/dev/null)" ; then
-        if ! b="$(command git describe --exact-match HEAD 2>/dev/null)" ; then
+      if ! b="$(command git symbolic-ref HEAD 2>/dev/null)"; then
+        if ! b="$(command git describe --exact-match HEAD 2>/dev/null)"; then
           b="$(cut -c1-7 "$g/HEAD")..."
         fi
       fi
@@ -89,7 +89,7 @@ git_prompt_info () {
       newfile='\?\? '
     fi
     d=''
-    s=$(command git status --porcelain 2> /dev/null)
+    s=$(command git status --porcelain 2>/dev/null)
     [[ $s =~ "$newfile" ]] && d+='+'
     [[ $s =~ "M " ]] && d+='*'
     [[ $s =~ "D " ]] && d+='-'
@@ -110,17 +110,17 @@ gref() {
 # git fix up commits
 gfix() {
   if (($# < 1)); then
-    log_error "Usage:\n";
-    echo "  gfix <git-sha>";
-    return 0;
+    log_error "Usage:\n"
+    echo "  gfix <git-sha>"
+    return 0
   fi
 
-  git_sha=$1;
+  git_sha=$1
   git cat-file -t "${git_sha}"
   if [[ $? -eq 0 ]]; then
     git commit --fixup ${git_sha} && git stash && git rebase -i --autosquash ${git_sha}~1 && git stash pop
   else
-    log_error "Invalid git commit sha: '${git_sha}'";
+    log_error "Invalid git commit sha: '${git_sha}'"
   fi
 }
 
