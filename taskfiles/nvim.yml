@@ -7,7 +7,7 @@ tasks:
     silent: true
     cmd: |
       ./scripts/commit_changed_file.sh \
-          '~/.config/nvim/lazy-lock.json' \
+          './config/nvim/lazy-lock.json' \
           'chore(nvim): update plugins'
 
   sync:
