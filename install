@@ -209,12 +209,11 @@ install-requirements() {
 
   # make sure dotvim is setup properly, have to do this after installing the various
   # required dependencies first (so neovim is installed and up to date)
-  if [[ ! -L $HOME/.config/nvim ]] || [[ $(readlink $HOME/.config/nvim) != $HOME/Code/rondale-sc/nvim ]]; then
+  if [[ ! -L $HOME/.config/nvim ]] || [[ $(readlink $HOME/.config/nvim) != $DOTFILES/config/nvim ]]; then
     echo "setting up nvim"
     rm -rf $HOME/.config/nvim
 
-    git clone git@github.com:rondale-sc/nvim.git $HOME/Code/rondale-sc/nvim
-    ln -s $HOME/Code/rondale-sc/nvim $HOME/.config/nvim
+    ln -s $DOTFILES/config/nvim $HOME/.config/nvim
 
     echo "installing deps"
     nvim --headless '+Lazy! restore' '+TSUpdate' '+qa'
