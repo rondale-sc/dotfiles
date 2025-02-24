@@ -146,7 +146,6 @@ install-requirements() {
     fi
 
     brew install fzf tmux starship zoxide gh ripgrep nvim tealdeer eza git git-delta gnu-sed bat atuin sd jj fish ast-grep zig go go-task/tap/go-task
-    brew install --cask wezterm ghostty
   else
     # we are within an rdev if this file exists
     if [ -f /etc/rdev.conf ]; then
