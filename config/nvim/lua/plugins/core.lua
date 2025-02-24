@@ -1,17 +1,13 @@
 return {
   {
-    -- Theme inspired by Atom
-    "navarasu/onedark.nvim",
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme("onedark")
-    end,
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "gruvbox",
+    },
   },
-  {
-    "folke/tokyonight.nvim",
-    lazy = true,
-    opts = { style = "moon" },
-  },
+  { "ellisonleao/gruvbox.nvim" },
+  { "navarasu/onedark.nvim" },
+  { "folke/tokyonight.nvim" },
   {
     "olimorris/codecompanion.nvim",
     dependencies = {
