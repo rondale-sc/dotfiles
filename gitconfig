@@ -51,3 +51,8 @@
 	path = ~/.gitconfig.local
 [fetch]
 	prune = true
+[feature]
+  manyFiles = true
+[maintenance]
+  auto = false
+  strategy = incremental
