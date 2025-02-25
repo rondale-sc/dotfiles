@@ -19,3 +19,6 @@ zsh_indicator = '🚀 '
 unknown_indicator = 'mystery shell'
 style = 'cyan bold'
 disabled = false
+
+[git_status]
+disabled = true
