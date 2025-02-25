@@ -85,6 +85,9 @@ setup-config() {
 
   link-dotfile "tmux.conf" "$HOME/.tmux.conf"
 
+  link-dotfile "starship/starship.toml" "$HOME/.config/starship.toml"
+
+
   if [[ "$OSTYPE" == darwin* ]]; then
   else
   fi
@@ -145,7 +148,8 @@ install-requirements() {
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
 
-    brew install fzf tmux starship zoxide gh ripgrep nvim tealdeer eza git git-delta gnu-sed bat atuin sd jj fish ast-grep zig go go-task/tap/go-task
+    brew install fzf tmux starship zoxide gh ripgrep nvim tealdeer eza git git-delta \
+      gnu-sed bat atuin sd jj fish ast-grep zig go go-task/tap/go-task
   else
     # we are within an rdev if this file exists
     if [ -f /etc/rdev.conf ]; then

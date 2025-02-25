@@ -68,18 +68,6 @@ if [ -z "$TMUX" ]; then
   bindkey -M viins "^Z" fg-widget
 fi
 
-# prompt
-p=
-if [ -n "$SSH_CONNECTION" ]; then
-  p='%{$fg_bold[yellow]%}%n@%m'
-else
-  p='%{$fg_bold[green]%}%n@%m'
-fi
-PROMPT="$p%{\$reset_color%}:%{\$fg_bold[cyan]%}%~%{\$reset_color%}\$(git_prompt_info '(%s)')%# "
-
-# show non-success exit code in right prompt
-RPROMPT="%(?..{%{$fg[red]%}%?%{$reset_color%}})"
-
 # history
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
@@ -91,6 +79,8 @@ setopt INC_APPEND_HISTORY
 (( ${+PAGER}   )) || export PAGER='less'
 (( ${+EDITOR}  )) || export EDITOR='vim'
 export PSQL_EDITOR='vim -c"setf sql"'
+
+eval "$(starship init zsh)"
 
 # Aliases
 # * Additional aliases are found in `.sharedrc`
