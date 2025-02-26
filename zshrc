@@ -5,14 +5,17 @@ fpath=(
   /usr/local/share/zsh/site-functions
 )
 
-source "$HOME/.sharedrc"
-
 # color term
 export CLICOLOR=1
 export LSCOLORS=Dxfxcxdxbxegedabadacad
 export ZLS_COLORS=$LSCOLORS
 export LC_CTYPE=en_US.UTF-8
 export LESS=FRX
+
+# set XDG paths
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_CONFIG_HOME="${HOME}/.config"
 
 # make with the nice completion
 autoload -U compinit; compinit
@@ -101,6 +104,11 @@ cdpath=(~ ~/src $DEV_DIR $SOURCE_DIR)
 typeset -aU path
 
 command -v brew > /dev/null && [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh 
+
+# load all config files
+for f in ${XDG_CONFIG_HOME}/zsh/*; do
+  source $f
+done
 
 source <(fzf --zsh)
 
