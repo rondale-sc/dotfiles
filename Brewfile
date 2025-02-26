@@ -100,3 +100,5 @@ brew 'ast-grep'
 brew 'go'
 
 brew 'watchman'
+
+brew 'zsh-completions'

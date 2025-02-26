@@ -12,6 +12,10 @@ includes:
     aliases: [dots]
     taskfile: ./taskfiles/dotfiles.yml
 
+  comp:
+    aliases: [c, completions]
+    taskfile: ./taskfiles/completions.yml
+
 tasks:
   default:
     cmd: task -l
