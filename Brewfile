@@ -17,12 +17,6 @@ cask 'iterm2'
 # brew 'openjdk'
 
 
-# compile C stuff
-brew 'cmake'
-
-# c++ compiler
-brew 'gcc'
-
 # source control
 brew 'git'
 
@@ -37,9 +31,6 @@ brew 'grep'
 
 # show active process and their telemetry
 brew 'btop'
-
-# docker desktop for containers
-cask 'docker'
 
 # build tool
 brew 'make'
