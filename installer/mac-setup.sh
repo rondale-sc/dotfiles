@@ -28,9 +28,5 @@ set_app_shortcut() {
   defaults write "$1" NSUserKeyEquivalents -dict-add "$2" "$3"
 }
 
-# Disable default shortcuts for tabs in wezterm
-set_app_shortcut "$app_id" 'Activate the tab to the left' '\0'
-set_app_shortcut "$app_id" 'Activate the tab to the right' '\0'
-
 echo 'Getting brew packages...'
 brew bundle
