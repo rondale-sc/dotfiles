@@ -16,9 +16,9 @@ tasks:
       Installs all dependencies and symlink dotfiles.
     silent: true
     cmds:
-      # - task: shell:zsh:default
-      # - task: create:dirs
-      # - task: symlink
+      - task: shell:zsh:default
+      - task: create:dirs
+      - task: symlink
       # - task: mac:set:defaults
       # # - task: fonts:sync
       # - task: brew:sync
@@ -42,20 +42,8 @@ tasks:
       FILES:
         # ideally this list should be as small as possible, use XDG_CONFIG
         # folder instead
-        - aliases
-        - ctags
-        - gemrc
         - gitconfig
-        - gitignore
-        - gitmessage
-        - ignore
-        - prettierrc
-        - pryrc
-        - psqlrc
-        - stylelintrc
-        - zinitrc
-        - zshenv
-        - zshrc
+        - tmux.conf
     cmds:
       - for:
           var: FILES
