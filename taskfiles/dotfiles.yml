@@ -16,13 +16,13 @@ tasks:
       Installs all dependencies and symlink dotfiles.
     silent: true
     cmds:
-      - task: shell:zsh:default
-      - task: create:dirs
-      - task: symlink
-      - task: mac:set:defaults
-      # - task: fonts:sync
-      - task: brew:sync
-      - task: print:done
+      # - task: shell:zsh:default
+      # - task: create:dirs
+      # - task: symlink
+      # - task: mac:set:defaults
+      # # - task: fonts:sync
+      # - task: brew:sync
+      # - task: print:done
 
   create:dirs:
     desc: Creates directories for dotfiles

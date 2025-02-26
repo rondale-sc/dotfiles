@@ -8,6 +8,10 @@ includes:
   brew:
     taskfile: ./taskfiles/brew.yml
 
+  dot:
+    aliases: [dots]
+    taskfile: ./taskfiles/dotfiles.yml
+
 tasks:
   default:
     cmd: task -l
