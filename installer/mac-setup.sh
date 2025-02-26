@@ -2,10 +2,10 @@
 
 if [ "$(hidutil property --get 'UserKeyMapping')" == '(null)' ]; then
   echo 'Remapping macOS modifiers...'
-  # remap CapsLock to Escape (now)
+  # remap CapsLock to Control (now)
   ./scripts/remap_macos_modifiers.sh
 
-  # remap CapsLock to Escape (survives system restarts)
+  # remap CapsLock to Control (survives system restarts)
   # this was generated using https://hidutil-generator.netlify.app/
   PLIST_TARGET="$HOME/Library/LaunchAgents/com.local.KeyRemapping.plist"
 
