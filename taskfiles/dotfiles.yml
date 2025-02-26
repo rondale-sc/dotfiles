@@ -7,6 +7,10 @@ includes:
     dir: ../
     internal: true
 
+  shell:
+    taskfile: ./shell.yml
+    internal: true
+
 tasks:
   install:
     desc: Install dotfiles
@@ -20,9 +24,8 @@ tasks:
       - task: create:dirs
       - task: symlink
       # - task: mac:set:defaults
-      # # - task: fonts:sync
-      # - task: brew:sync
-      # - task: print:done
+      - task: brew:sync
+      - task: print:done
 
   create:dirs:
     desc: Creates directories for dotfiles
@@ -42,8 +45,9 @@ tasks:
       FILES:
         # ideally this list should be as small as possible, use XDG_CONFIG
         # folder instead
+        - zshrc
+        - zprofile
         - gitconfig
-        - tmux.conf
     cmds:
       - for:
           var: FILES
@@ -62,7 +66,7 @@ tasks:
         silent: true
 
   print:done:
-    desc: Prints done with a cool font and some nice gradients (animated)
+    desc: Prints done
     internal: true
-    cmd: echo DONE | figlet | lolcrab -a --speed 1 --duration 1 --gradient warm
+    cmd: echo DONE | figlet
     silent: true

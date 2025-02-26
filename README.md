@@ -5,7 +5,7 @@
 So far the installation should be pretty straightforward on Darwin:
 
 ```sh
-./install
+./setup.sh
 ```
 
 This is very much under construction. Will likely clean things up a bit with
