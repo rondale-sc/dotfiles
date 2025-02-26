@@ -47,6 +47,8 @@ echo
 if [[ $OS = 'mac' ]]; then
   echo 'macOS detected'
   ./installer/mac-setup.sh
+  ./installer/volta-setup.sh
+  ./installer/rust-setup.sh
 fi
 
 if [[ -f ~/.local/bin/task ]]; then
