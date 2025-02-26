@@ -5,6 +5,9 @@ includes:
   nvim:
     taskfile: ./taskfiles/nvim.yml
 
+  brew:
+    taskfile: ./taskfiles/brew.yml
+
 tasks:
   default:
     cmd: task -l
