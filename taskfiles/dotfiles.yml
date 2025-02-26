@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+includes:
+  brew:
+    taskfile: ./brew.yml
+    dir: ../
+    internal: true
+
+  shell:
+    taskfile: ./shell.yml
+    internal: true
+
+tasks:
+  install:
+    desc: Install dotfiles
+    summary: |
+      Install dotfiles
+
+      Installs all dependencies and symlink dotfiles.
+    silent: true
+    cmds:
+      - task: shell:zsh:default
+      - task: create:dirs
+      - task: symlink
+      # - task: mac:set:defaults
+      - task: brew:sync
+      - task: print:done
+
+  create:dirs:
+    desc: Creates directories for dotfiles
+    vars:
+      DIRS:
+        - "~/.cache/zsh/completions"
+        - "~/.config"
+        - "~/.local/share/psql"
+    cmds:
+      - cmd: mkdir -p {{.DIRS | join " "}}
+        # we don't care about failures if they already exist
+        ignore_error: true
+
+  symlink:
+    desc: Symlinks dotfiles and folders
+    vars:
+      FILES:
+        # ideally this list should be as small as possible, use XDG_CONFIG
+        # folder instead
+        - zshrc
+        - zprofile
+        - gitconfig
+    cmds:
+      - for:
+          var: FILES
+          as: FILE
+        cmd: |
+          ln -s -f "$(realpath ./{{.FILE}})" ~/.{{.FILE}}
+
+      - cmd: |
+          for folder in ./config/*; do
+            echo "Symlinking $(basename $folder)..."
+            source_path=$(realpath $folder)
+            pushd ~/.config > /dev/null 2>&1
+            ln -s -f "$source_path" . > /dev/null 2>&1
+            popd > /dev/null 2>&1
+          done
+        silent: true
+
+  print:done:
+    desc: Prints done
+    internal: true
+    cmd: echo DONE | figlet
+    silent: true

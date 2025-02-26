@@ -5,7 +5,19 @@ includes:
   nvim:
     taskfile: ./taskfiles/nvim.yml
 
+  brew:
+    taskfile: ./taskfiles/brew.yml
+
+  dot:
+    aliases: [dots]
+    taskfile: ./taskfiles/dotfiles.yml
+
 tasks:
   default:
     cmd: task -l
     silent: true
+
+  install:
+    desc: An alias to dot:install
+    cmds:
+      - task: dot:install

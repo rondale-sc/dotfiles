@@ -83,7 +83,7 @@ setup-config() {
 
   link-dotfile "gitconfig" "$HOME/.gitconfig"
 
-  link-dotfile "tmux.conf" "$HOME/.tmux.conf"
+  link-dotfile "config/tmux.conf" "$HOME/.tmux.conf"
 
   link-dotfile "starship/starship.toml" "$HOME/.config/starship.toml"
 
