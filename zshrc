@@ -78,8 +78,10 @@ setopt INC_APPEND_HISTORY
 # default apps
 (( ${+PAGER}   )) || export PAGER='less'
 (( ${+EDITOR}  )) || export EDITOR='vim'
-export PSQL_EDITOR='vim -c"setf sql"'
 
+export PSQL_EDITOR='vim -c"setf sql"'
+# set up starship prompt
+export STARSHIP_CONFIG="$HOME/.config/starship/config.toml"
 eval "$(starship init zsh)"
 
 # Aliases
