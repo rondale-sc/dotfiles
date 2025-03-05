@@ -75,6 +75,23 @@ gfix() {
   fi
 }
 
+# Summary: Kill a process that is listening a port
+#
+# Help: Don't know where that Rails server is listening? Just freethousand!
+# This command takes a port as an argument, otherwise defaulting to 3000.
+
+freethousand() {
+  port="${1:-3000}"
+  pid="$(lsof -t -i tcp:$port | sed 's/p//')"
+
+  if [ -n "$pid" ]; then
+    echo "Killing process with PID $pid listening on port $port..." >&2
+    kill -9 $pid
+  else
+    echo "No process listening on port $port" >&2
+  fi
+}
+
 # Git aliases
 #
 alias gap='git add -p'
