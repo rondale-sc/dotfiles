@@ -22,3 +22,4 @@ disabled = false
 
 [git_status]
 disabled = false
+style = "bright-white"
