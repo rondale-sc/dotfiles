@@ -22,4 +22,5 @@ disabled = false
 
 [git_status]
 disabled = false
+stashed = ''
 style = "bright-white"
