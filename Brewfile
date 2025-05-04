@@ -102,3 +102,5 @@ brew 'go'
 brew 'watchman'
 
 brew 'zsh-completions'
+
+brew 'radare2'
