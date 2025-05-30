@@ -34,17 +34,3 @@ nmap({ "<C-l>", ":tabnext<CR>" })
 -- Keep selection when indenting/outdenting.
 vmap({ ">", ">gv" })
 vmap({ "<", "<gv" })
-
--- dap attach
-vim.keymap.set("n", "<leader>nda", function()
-  print("attaching")
-  require("dap").run({
-    name = "dap",
-    type = "node2",
-    request = "attach",
-    cwd = vim.fn.getcwd(),
-    sourceMaps = true,
-    protocol = "inspector",
-    skipFiles = { "<node_internals>/**/*.js" },
-  })
-end)

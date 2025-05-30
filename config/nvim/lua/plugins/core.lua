@@ -41,12 +41,6 @@ return {
   { "microsoft/vscode-js-debug" },
 
   {
-    "williamboman/mason.nvim",
-    "mfussenegger/nvim-dap",
-    "jay-babu/mason-nvim-dap.nvim",
-  },
-
-  {
     "rcarriga/nvim-notify",
     opts = {
       level = 3,
