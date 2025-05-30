@@ -8,13 +8,7 @@ return {
   { "ellisonleao/gruvbox.nvim" },
   { "navarasu/onedark.nvim" },
   { "folke/tokyonight.nvim" },
-  {
-    "olimorris/codecompanion.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-  },
+  { "nvim-lua/plenary.nvim" },
   {
     -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
