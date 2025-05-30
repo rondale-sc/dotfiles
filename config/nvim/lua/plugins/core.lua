@@ -37,7 +37,7 @@ return {
   { "tpope/vim-eunuch" },
   { "AndrewRadev/ember_tools.vim" },
   { "mustache/vim-mustache-handlebars" },
-  { "mxsdev/nvim-dap-vscode-js" },
+  -- { "mxsdev/nvim-dap-vscode-js" },
   { "microsoft/vscode-js-debug" },
 
   {
