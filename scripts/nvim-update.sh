@@ -1,11 +1,10 @@
 #!/bin/bash
 
 nvim \
-	--headless \
-	+verbose \
-	+'Lazy! sync' \
-	+'Lazy! clean' \
-	+'Lazy! clear' \
-	+'TSUpdateSync' \
-	+'MasonUpdateAll' \
-	+'qall!'
+  --headless \
+  +verbose \
+  +'Lazy! sync' \
+  +'Lazy! clean' \
+  +'Lazy! clear' \
+  +'TSUpdateSync' \
+  +'qall!'
