@@ -39,6 +39,8 @@ return {
   { "mustache/vim-mustache-handlebars" },
   -- { "mxsdev/nvim-dap-vscode-js" },
   { "microsoft/vscode-js-debug" },
+  { "mfussenegger/nvim-dap" },
+  { "jay-babu/mason-nvim-dap.nvim" },
 
   {
     "rcarriga/nvim-notify",
