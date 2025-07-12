@@ -22,6 +22,8 @@ return {
   { import = "lazyvim.plugins.extras.lang.typescript" },
   { import = "lazyvim.plugins.extras.lang.python" },
 
+  { "maxbane/vim-asm_ca65", lazy = false },
+
   -- git configuration
   { "tpope/vim-fugitive" },
   { "tpope/vim-rhubarb" },
