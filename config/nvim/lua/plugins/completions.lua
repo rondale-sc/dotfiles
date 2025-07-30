@@ -10,6 +10,12 @@ return {
     },
   },
   {
+    "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },
+  {
     "hrsh7th/nvim-cmp",
     config = function()
       local cmp = require("cmp")
@@ -33,8 +39,18 @@ return {
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          ["<C-o>"] = cmp.mapping(function(fallback)
+            local fallback_key = vim.api.nvim_replace_termcodes("<Tab>", true, true, true)
+            local resolved_key = vim.fn["copilot#Accept"](fallback)
+            if fallback_key == resolved_key then
+              cmp.confirm({ select = true })
+            else
+              vim.api.nvim_feedkeys(resolved_key, "n", true)
+            end
+          end),
         }),
         sources = cmp.config.sources({
+          { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "luasnip" }, -- For luasnip users.
         }, {
