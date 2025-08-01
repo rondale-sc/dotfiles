@@ -25,7 +25,6 @@ return {
   { "maxbane/vim-asm_ca65", lazy = false },
 
   -- git configuration
-  { "tpope/vim-fugitive" },
   { "tpope/vim-rhubarb" },
   { "tpope/vim-rsi" },
   { "tpope/vim-eunuch" },
