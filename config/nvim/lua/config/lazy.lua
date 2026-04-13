@@ -9,7 +9,7 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 -- LSP ---
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = true,
-  virtual_text = false,
+  virtual_text = { severity = { min = vim.diagnostic.severity.WARN } },
   signs = true,
   update_in_insert = false,
 })
@@ -29,6 +29,7 @@ require("lazy").setup({
     -- { import = "lazyvim.plugins.extras.lang.rust" },
     { import = "lazyvim.plugins.extras.linting.eslint" },
     { import = "lazyvim.plugins.extras.formatting.prettier" },
+    { import = "lazyvim.plugins.extras.lang.go" },
     -- { import = "lazyvim.plugins.extras.coding.copilot" },
     -- { import = "lazyvim.plugins.extras.lang.json" },
     -- { import = "lazyvim.plugins.extras.ui.mini-animate" },
