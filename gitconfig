@@ -27,7 +27,7 @@
 [color]
 	ui = auto
 [core]
-	excludesfile = ~/.cvsignore
+	excludesFile = ~/.gitignore
 	editor = nvim
 	whitespace = warn
 [help]

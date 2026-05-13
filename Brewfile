@@ -104,3 +104,5 @@ brew 'watchman'
 brew 'zsh-completions'
 
 brew 'radare2'
+
+brew 'jq'

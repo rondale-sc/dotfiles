@@ -1,0 +1,9 @@
+[tool.black]
+run = true
+line-length = 160
+quoteStyle = "double"
+check-only = false
+
+[tool.isort]
+check-only = false
+run = false
