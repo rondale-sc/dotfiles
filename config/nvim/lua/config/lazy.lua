@@ -6,14 +6,13 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
--- LSP ---
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+-- Diagnostic display (replaces the old vim.lsp.with() handler override).
+vim.diagnostic.config({
   underline = true,
   virtual_text = { severity = { min = vim.diagnostic.severity.WARN } },
   signs = true,
   update_in_insert = false,
 })
---- END LSP ---
 
 require("lazy").setup({
   -- Visual git gutter (also used by feline)
