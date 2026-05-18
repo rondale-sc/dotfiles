@@ -133,4 +133,4 @@ alias dce="docker-compose exec"
 #
 alias vi='nvim'
 
-alias claude='claude --plugin-dir /Users/jonjacks/Code/linkedin/claude-session-memory --allow-dangerously-skip-permissions'
+# alias claude='claude --plugin-dir /Users/jonjacks/Code/linkedin/claude-session-memory --allow-dangerously-skip-permissions'
