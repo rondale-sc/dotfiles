@@ -46,7 +46,7 @@ brew 'morantron/tmux-fingers/tmux-fingers'
 brew 'wget'
 
 # display system info
-brew 'neofetch'
+# brew 'neofetch'
 
 # keep ZSH up to date
 brew 'zsh'
@@ -96,8 +96,6 @@ brew 'jj'
 brew 'fish'
 
 brew 'ast-grep'
-
-brew 'go'
 
 brew 'watchman'
 

@@ -6,22 +6,22 @@ export SOURCE_DIR
 # Paths for prepending
 #
 for dir in /usr/local/bin "$HOME/bin" .git/safe/../../bin; do
-	case "$PATH:" in
-	*:"$dir":*) PATH="$(echo "$PATH" | sed -e "s#:$dir##")" ;;
-	esac
-	case "$dir" in
-	/*) [ ! -d "$dir" ] || PATH="$dir:$PATH" ;;
-	*) PATH="$dir:$PATH" ;;
-	esac
+  case "$PATH:" in
+  *:"$dir":*) PATH="$(echo "$PATH" | sed -e "s#:$dir##")" ;;
+  esac
+  case "$dir" in
+  /*) [ ! -d "$dir" ] || PATH="$dir:$PATH" ;;
+  *) PATH="$dir:$PATH" ;;
+  esac
 done
 
 # Paths for appending
 #
 for dir in /usr/local/sbin /opt/local/sbin /usr/X11/bin $HOME/.local/bin; do
-	case ":$PATH:" in
-	*:"$dir":*) ;;
-	*) [ ! -d "$dir" ] || PATH="$PATH:$dir" ;;
-	esac
+  case ":$PATH:" in
+  *:"$dir":*) ;;
+  *) [ ! -d "$dir" ] || PATH="$PATH:$dir" ;;
+  esac
 done
 
 # File management aliases
@@ -38,41 +38,41 @@ alias rd='rmdir'
 # File management functions
 #
 function l {
-	ls -ld "${1:-$PWD}"/.[^.]*
+  ls -ld "${1:-$PWD}"/.[^.]*
 }
 
 # Git functions
 #
 if command -v hub >/dev/null; then
-	git() {
-		command hub "$@"
-	}
+  git() {
+    command hub "$@"
+  }
 fi
 
 gcr() {
-	git checkout -b $1 origin/$1
+  git checkout -b $1 origin/$1
 }
 
 # git reset empty files
 gref() {
-	command git --no-pager diff --cached --stat | command grep "|\s*0$" | awk '{system("command git reset " $1)}'
+  command git --no-pager diff --cached --stat | command grep "|\s*0$" | awk '{system("command git reset " $1)}'
 }
 
 # git fix up commits
 gfix() {
-	if (($# < 1)); then
-		log_error "Usage:\n"
-		echo "  gfix <git-sha>"
-		return 0
-	fi
+  if (($# < 1)); then
+    log_error "Usage:\n"
+    echo "  gfix <git-sha>"
+    return 0
+  fi
 
-	git_sha=$1
-	git cat-file -t "${git_sha}"
-	if [[ $? -eq 0 ]]; then
-		git commit --fixup ${git_sha} && git stash && git rebase -i --autosquash ${git_sha}~1 && git stash pop
-	else
-		log_error "Invalid git commit sha: '${git_sha}'"
-	fi
+  git_sha=$1
+  git cat-file -t "${git_sha}"
+  if [[ $? -eq 0 ]]; then
+    git commit --fixup ${git_sha} && git stash && git rebase -i --autosquash ${git_sha}~1 && git stash pop
+  else
+    log_error "Invalid git commit sha: '${git_sha}'"
+  fi
 }
 
 # Summary: Kill a process that is listening a port
@@ -81,15 +81,15 @@ gfix() {
 # This command takes a port as an argument, otherwise defaulting to 3000.
 
 freethousand() {
-	port="${1:-3000}"
-	pid="$(lsof -t -i tcp:$port | sed 's/p//')"
+  port="${1:-3000}"
+  pid="$(lsof -t -i tcp:$port | sed 's/p//')"
 
-	if [ -n "$pid" ]; then
-		echo "Killing process with PID $pid listening on port $port..." >&2
-		kill -9 $pid
-	else
-		echo "No process listening on port $port" >&2
-	fi
+  if [ -n "$pid" ]; then
+    echo "Killing process with PID $pid listening on port $port..." >&2
+    kill -9 $pid
+  else
+    echo "No process listening on port $port" >&2
+  fi
 }
 
 # Git aliases
