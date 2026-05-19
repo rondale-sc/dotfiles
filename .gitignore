@@ -9,3 +9,8 @@ foo.*
 data
 
 .gemini-api-key
+
+# Local-only zsh customizations dropped into zshrc.local.d/ stay on the
+# machine they were written on. README is the only tracked file there.
+zshrc.local.d/*
+!zshrc.local.d/README.md

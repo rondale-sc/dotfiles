@@ -34,6 +34,10 @@ tasks:
         - "~/.cache/zsh/completions"
         - "~/.config"
         - "~/.local/share/psql"
+        # Local-only zsh customizations live here. Created on every install
+        # so the loader in zshrc.local always finds a directory, but the
+        # repo never symlinks INTO it — function files stay private.
+        - "~/.zshrc.local.d"
     cmds:
       - cmd: mkdir -p {{.DIRS | join " "}}
         # we don't care about failures if they already exist
@@ -48,6 +52,10 @@ tasks:
         - zshrc
         - zprofile
         - gitconfig
+        # Loader for ~/.zshrc.local.d/ drop-ins. The drop-in directory
+        # itself is created by create:dirs and is NOT symlinked, so
+        # function files placed there stay local to the machine.
+        - zshrc.local
     cmds:
       - for:
           var: FILES

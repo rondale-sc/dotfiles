@@ -1,0 +1,19 @@
+# Sources every readable file in ~/.zshrc.local.d/ in sorted order.
+#
+# Drop a new file in that directory to add another local zsh function or
+# customization — no need to touch this file or any tracked dotfile.
+# Naming convention: one function per file, named after the function
+# (e.g. ~/.zshrc.local.d/mp-deploy-state). Files starting with `.` are skipped.
+#
+# This file IS tracked in the dotfiles repo. Files inside ~/.zshrc.local.d/
+# are NOT — that directory is created locally by `task install` and its
+# contents stay on your machine only.
+local _zshrc_local_dir="$HOME/.zshrc.local.d"
+if [[ -d "$_zshrc_local_dir" ]]; then
+  local _f
+  for _f in "$_zshrc_local_dir"/*(N.r); do
+    source "$_f"
+  done
+  unset _f
+fi
+unset _zshrc_local_dir
