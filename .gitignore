@@ -14,3 +14,7 @@ data
 # machine they were written on. README is the only tracked file there.
 zshrc.local.d/*
 !zshrc.local.d/README.md
+
+# Claude Code skills are fetched from upstream at install time, pinned by
+# claude/skills.json. The fetched copies are ephemeral and not tracked.
+claude/skills/

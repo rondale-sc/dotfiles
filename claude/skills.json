@@ -1,0 +1,18 @@
+{
+  "skills": [
+    { "github_path": "obra/superpowers/skills/brainstorming",                  "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/dispatching-parallel-agents",    "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/executing-plans",                "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/finishing-a-development-branch", "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/receiving-code-review",          "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/requesting-code-review",         "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/subagent-driven-development",    "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/systematic-debugging",           "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/test-driven-development",        "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/using-git-worktrees",            "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/using-superpowers",              "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/verification-before-completion", "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/writing-plans",                  "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" },
+    { "github_path": "obra/superpowers/skills/writing-skills",                 "sha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7" }
+  ]
+}
