@@ -71,6 +71,11 @@ brew 'mas'
 
 brew 'fzf'
 
+# fast grep/find — required by telescope.nvim's live_grep and file pickers
+brew 'ripgrep'
+
+brew 'fd'
+
 brew 'starship'
 
 brew 'zoxide'
