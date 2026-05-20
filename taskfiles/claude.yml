@@ -79,6 +79,12 @@ tasks:
             ln -sfn "$src" "$CLAUDE_HOME/skills/$name"
             echo "linked: $CLAUDE_HOME/skills/$name -> $src"
           done
+
+          # Statusline script
+          if [ -f ./claude/statusline.sh ]; then
+            ln -sfn "$(realpath ./claude/statusline.sh)" "$CLAUDE_HOME/statusline.sh"
+            echo "linked: $CLAUDE_HOME/statusline.sh -> $(realpath ./claude/statusline.sh)"
+          fi
         silent: true
 
   sync-upstream:

@@ -12,3 +12,9 @@ else
   volta install node
   volta install yarn
 fi
+
+# ccusage drives the Claude Code statusline (claude/statusline.sh).
+if ! command -v ccusage >/dev/null 2>&1; then
+  echo "installing ccusage"
+  $HOME/.volta/bin/volta install ccusage
+fi
