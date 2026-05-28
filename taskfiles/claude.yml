@@ -1,21 +1,33 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-# Claude Code skills are declared in claude/skills.json. Each entry has:
-#   github_path  -- "<owner>/<repo>/<path-inside-repo>"  (resolves to
-#                   https://github.com/<owner>/<repo>.git and the path-inside-repo
-#                   becomes the skill folder source)
-#   sha          -- pinned commit
-#   name         -- (optional) override for the skill folder name in
-#                   ~/.claude/skills/ ; defaults to the last segment of github_path
+# Claude Code skills are loaded from three sources, all symlinked into
+# ~/.claude/skills/:
+#
+#   1. claude/skills.json  -- pinned upstream skills, fetched from GitHub
+#                             (cached in claude/skills/, gitignored).
+#                             Each entry: github_path + sha + optional name.
+#   2. claude/skills-tracked/<skill>/ -- skill folders committed to dotfiles.
+#                                        Use for personal or shared skills you
+#                                        want versioned across machines.
+#   3. claude/skills-local/<skill>/ -- skill folders local to this machine
+#                                      (gitignored except for .gitkeep). Use
+#                                      for experiments or sensitive skills.
+#
+# Each skill folder MUST contain SKILL.md. If it also contains commands/,
+# those are exposed under ~/.claude/commands/<skill> so slash commands
+# surface as /<skill>:<cmd>. Skill folder names must be unique across all
+# three sources; collisions abort the install.
 #
 # `install` fetches the pinned skills (grouping by repo+sha so the same repo
-# clones once) and symlinks them into ~/.claude/skills/.
+# clones once) and symlinks all three sources into ~/.claude/skills/.
 # `sync-upstream` diffs each pinned skill against upstream HEAD; with
 # `-- --apply`, rewrites every sha in skills.json to upstream HEAD of its repo.
 
 vars:
   SKILLS_SRC: ./claude/skills
+  SKILLS_TRACKED: ./claude/skills-tracked
+  SKILLS_LOCAL: ./claude/skills-local
   MANIFEST: ./claude/skills.json
 
 tasks:
@@ -71,14 +83,57 @@ tasks:
             echo "$manifest_hash" > "$fetched_marker"
           fi
 
-          mkdir -p "$CLAUDE_HOME/skills"
-          for d in {{.SKILLS_SRC}}/*/; do
-            [ -d "$d" ] || continue
-            name="$(basename "$d")"
-            src="$(realpath "$d")"
-            ln -sfn "$src" "$CLAUDE_HOME/skills/$name"
-            echo "linked: $CLAUDE_HOME/skills/$name -> $src"
-          done
+          mkdir -p "$CLAUDE_HOME/skills" "$CLAUDE_HOME/commands"
+
+          # Symlink each <skill>/ subdirectory from one source root into
+          # ~/.claude/skills/. If the skill ships /commands/, expose those
+          # under ~/.claude/commands/<skill> so slash commands surface as
+          # /<skill>:<cmd>. Aborts on cross-source name collisions.
+          link_skills_from() {
+            local src_root="$1" source_label="$2"
+            [ -d "$src_root" ] || return 0
+            for d in "$src_root"/*/; do
+              [ -d "$d" ] || continue
+              local name src dst existing
+              name="$(basename "$d")"
+              src="$(realpath "$d")"
+              dst="$CLAUDE_HOME/skills/$name"
+
+              if [ -L "$dst" ]; then
+                existing="$(readlink "$dst")"
+                if [ "$existing" != "$src" ]; then
+                  echo "!! collision: skill '$name' from $source_label conflicts with existing link -> $existing"
+                  exit 1
+                fi
+              elif [ -e "$dst" ]; then
+                echo "!! collision: $dst exists and is not a symlink"
+                exit 1
+              fi
+
+              ln -sfn "$src" "$dst"
+              echo "linked: $dst -> $src ($source_label)"
+
+              if [ -d "$src/commands" ]; then
+                local cmd_dst="$CLAUDE_HOME/commands/$name"
+                if [ -L "$cmd_dst" ]; then
+                  existing="$(readlink "$cmd_dst")"
+                  if [ "$existing" != "$src/commands" ]; then
+                    echo "!! collision: commands/$name from $source_label conflicts with existing link -> $existing"
+                    exit 1
+                  fi
+                elif [ -e "$cmd_dst" ]; then
+                  echo "!! collision: $cmd_dst exists and is not a symlink"
+                  exit 1
+                fi
+                ln -sfn "$src/commands" "$cmd_dst"
+                echo "linked: $cmd_dst -> $src/commands ($source_label)"
+              fi
+            done
+          }
+
+          link_skills_from "{{.SKILLS_SRC}}" "pinned"
+          link_skills_from "{{.SKILLS_TRACKED}}" "tracked"
+          link_skills_from "{{.SKILLS_LOCAL}}" "local"
 
           # Statusline script
           if [ -f ./claude/statusline.sh ]; then

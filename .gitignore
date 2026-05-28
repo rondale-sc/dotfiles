@@ -18,3 +18,8 @@ zshrc.local.d/*
 # Claude Code skills are fetched from upstream at install time, pinned by
 # claude/skills.json. The fetched copies are ephemeral and not tracked.
 claude/skills/
+
+# Local-only skills bucket: drop a skill folder into claude/skills-local/ to
+# use it on this machine without committing it. Only .gitkeep is tracked.
+claude/skills-local/*
+!claude/skills-local/.gitkeep
