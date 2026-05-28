@@ -58,3 +58,6 @@
   strategy = incremental
 [init]
 	defaultBranch = main
+[user]
+	name = Jonathan Jackson
+	email = jonjacks@linkedin.com
