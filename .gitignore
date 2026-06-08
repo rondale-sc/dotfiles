@@ -15,11 +15,11 @@ data
 zshrc.local.d/*
 !zshrc.local.d/README.md
 
-# Claude Code skills are fetched from upstream at install time, pinned by
-# claude/skills.json. The fetched copies are ephemeral and not tracked.
-claude/skills/
+# Agent skills are fetched from upstream at install time, pinned by
+# agents/skills.json. The fetched copies are ephemeral and not tracked.
+agents/skills/
 
-# Local-only skills bucket: drop a skill folder into claude/skills-local/ to
+# Local-only skills bucket: drop a skill folder into agents/skills-local/ to
 # use it on this machine without committing it. Only .gitkeep is tracked.
-claude/skills-local/*
-!claude/skills-local/.gitkeep
+agents/skills-local/*
+!agents/skills-local/.gitkeep

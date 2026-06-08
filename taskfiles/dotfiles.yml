@@ -11,8 +11,8 @@ includes:
     taskfile: ./shell.yml
     internal: true
 
-  claude:
-    taskfile: ./claude.yml
+  agents:
+    taskfile: ./agents.yml
     internal: true
 
 tasks:
@@ -27,7 +27,7 @@ tasks:
       - task: shell:zsh:default
       - task: create:dirs
       - task: symlink
-      - task: claude:install
+      - task: agents:install
       # - task: mac:set:defaults
       - task: brew:sync
       - task: print:done

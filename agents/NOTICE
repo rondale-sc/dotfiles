@@ -1,6 +1,6 @@
-Claude Code skills materialized under claude/skills/ by `task claude:install`
-are fetched from the GitHub repos declared in claude/skills.json, pinned to
-the SHAs in that manifest. claude/skills/ is gitignored — the contents are
+Agent skills materialized under agents/skills/ by `task agents:install`
+are fetched from the GitHub repos declared in agents/skills.json, pinned to
+the SHAs in that manifest. agents/skills/ is gitignored — the contents are
 re-fetched on install.
 
 The skills currently sourced from https://github.com/obra/superpowers are

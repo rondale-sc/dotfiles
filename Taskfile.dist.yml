@@ -16,8 +16,9 @@ includes:
     aliases: [c, completions]
     taskfile: ./taskfiles/completions.yml
 
-  claude:
-    taskfile: ./taskfiles/claude.yml
+  agents:
+    aliases: [claude]
+    taskfile: ./taskfiles/agents.yml
 
 tasks:
   default:
