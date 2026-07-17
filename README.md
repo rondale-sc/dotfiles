@@ -12,6 +12,27 @@ This is very much under construction. Will likely clean things up a bit with
 references so I can find things over time. But for now, this is just tryin' to
 get my personal machine in line with my work machine
 
+## RDev installation
+
+RDev should use the dedicated safe installer instead of the full macOS setup:
+
+```sh
+./rdev-install.sh
+```
+
+If RDev invokes the conventional dotfiles `install.sh`, that wrapper delegates
+to `rdev-install.sh` when `/etc/rdev.conf` is present. The RDev installer only
+symlinks shell/editor config and does not bootstrap Neovim plugins or run the
+macOS/Homebrew/agent install tasks.
+
+To test with RDev:
+
+```sh
+rdev create observe-dashboards --dotfiles-repo git@github.com:rondale-sc/dotfiles.git
+```
+
+Use `rdev profile edit` to update the sticky dotfiles repo for future RDevs.
+
 ## Local-only zsh customizations
 
 Some shell helpers shouldn't live in a public dotfiles repo — work-specific

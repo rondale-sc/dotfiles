@@ -68,14 +68,18 @@ setopt INC_APPEND_HISTORY
 
 export PSQL_EDITOR='vim -c"setf sql"'
 # set up starship prompt
-export STARSHIP_CONFIG="$HOME/.config/starship/config.toml"
-eval "$(starship init zsh)"
+if command -v starship >/dev/null 2>&1; then
+  export STARSHIP_CONFIG="$HOME/.config/starship/config.toml"
+  eval "$(starship init zsh)"
+fi
 
 # Aliases
 # * Additional aliases are found in `.sharedrc`
 #
 alias reload='source ~/.zshrc; echo -e "\n\u2699  \e[33mZSH config reloaded\e[0m \u2699"'
-alias vim="nvim"
+if command -v nvim >/dev/null 2>&1; then
+  alias vim="nvim"
+fi
 
 # import local zsh customizations, if present
 zrcl="$HOME/.zshrc.local"
@@ -91,10 +95,12 @@ command -v brew > /dev/null && [[ -s $(brew --prefix)/etc/profile.d/autojump.sh 
 
 # load all config files
 for f in ${XDG_CONFIG_HOME}/zsh/*; do
-  source $f
+  [[ ! -r "$f" ]] || source "$f"
 done
 
-source <(fzf --zsh)
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
 
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
