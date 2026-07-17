@@ -20,5 +20,5 @@ opt.signcolumn = "yes"
 vim.cmd("syntax enable")
 vim.cmd("filetype plugin indent on")
 
-vim.keymap.set("n", "<leader>w", "<cmd>write<cr>", { silent = true })
-vim.keymap.set("n", "<leader>q", "<cmd>quit<cr>", { silent = true })
+vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>write<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>q", "<cmd>quit<cr>", { noremap = true, silent = true })

@@ -6,6 +6,7 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 link_path() {
   local source="$1"
   local target="$2"
+  local backup="${target}.rdev-install.backup"
 
   if [[ ! -e "$source" ]]; then
     echo "missing source: $source" >&2
@@ -14,13 +15,18 @@ link_path() {
 
   mkdir -p "$(dirname "$target")"
 
-  if [[ -L "$target" || ! -e "$target" ]]; then
-    ln -sfn "$source" "$target"
-    echo "linked: $target -> $source"
-    return 0
+  if [[ -e "$target" && ! -L "$target" ]]; then
+    if [[ -e "$backup" ]]; then
+      echo "skipping existing non-symlink because backup already exists: $target" >&2
+      return 0
+    fi
+
+    mv "$target" "$backup"
+    echo "backed up: $target -> $backup"
   fi
 
-  echo "skipping existing non-symlink: $target" >&2
+  ln -sfn "$source" "$target"
+  echo "linked: $target -> $source"
 }
 
 echo "[rdev-install] installing RDev-safe dotfiles from $DOTFILES_DIR"
