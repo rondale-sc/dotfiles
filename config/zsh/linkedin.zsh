@@ -84,11 +84,11 @@ command -v direnv >/dev/null && eval "$(direnv hook zsh)"
 
 # --- 3. Global Go fallbacks for ad-hoc `go` calls outside any MP.
 # Inside an MP, direnv + golnkd-core override these with per-MP values.
-export GOPROXY="gomodproxy.corp.linkedin.com"
-export GOSUMDB="off"
-export GOPRIVATE="*"
-export GONOSUMDB="*"
-export GONOPROXY="none"
+# The actual GOPROXY/GOSUMDB/GOPRIVATE/GONOPROXY values live in
+# ~/.zshrc.local.d/linkedin-goproxy (untracked — see that dir's README)
+# so the internal proxy hostname isn't hardcoded into this public repo.
+# Without that local file dropped in, ad-hoc `go` calls outside an MP just
+# fall through to the public proxy.golang.org defaults.
 
 # --- 4. Put the newest golnkd-core-managed Go on PATH for scratch work
 # outside an MP. Inside an MP, direnv prepends the MP-pinned version, which
