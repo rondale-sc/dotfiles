@@ -61,6 +61,8 @@ tasks:
         # itself is created by create:dirs and is NOT symlinked, so
         # function files placed there stay local to the machine.
         - zshrc.local
+      BIN_FILES:
+        - tmux-session
     cmds:
       - for:
           var: FILES
@@ -77,6 +79,12 @@ tasks:
             popd > /dev/null 2>&1
           done
         silent: true
+
+      - cmd: |
+          mkdir -p "$HOME/.local/bin"
+          for file in {{.BIN_FILES | join " "}}; do
+            ln -sfn "$(realpath "./bin/$file")" "$HOME/.local/bin/$file"
+          done
 
   print:done:
     desc: Prints done

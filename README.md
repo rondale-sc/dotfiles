@@ -64,3 +64,13 @@ per file) and open a new shell — or run `source ~/.zshrc`.
 
 See [`zshrc.local.d/README.md`](zshrc.local.d/README.md) for conventions and
 examples.
+
+## Commands
+
+Tracked command-line utilities live in [`bin/`](bin/) and `task install`
+symlinks them into `~/.local/bin/`, which the shared zsh configuration adds to
+`PATH`.
+
+- `tmux-session save` records tmux sessions and windows in `~/.tmux-session`.
+- `tmux-session restore` recreates saved sessions whose working directories
+  still exist.

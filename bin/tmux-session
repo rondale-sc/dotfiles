@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# Save and restore tmux sessions and their windows.
+set -euo pipefail
+
+session_file="${TMUX_SESSION_FILE:-$HOME/.tmux-session}"
+
+die() {
+  echo "tmux-session: $*" >&2
+  exit 1
+}
+
+require_tmux() {
+  command -v tmux >/dev/null 2>&1 || die "tmux is not installed"
+}
+
+save() {
+  require_tmux
+
+  local temporary_file
+  temporary_file="$(mktemp "${session_file}.XXXXXX")"
+
+  if ! tmux list-windows -a -F $'#S\t#W\t#{pane_current_path}' >"$temporary_file" 2>/dev/null; then
+    : >"$temporary_file"
+  fi
+
+  mv "$temporary_file" "$session_file"
+}
+
+terminal_dimensions() {
+  local rows columns
+  read -r rows columns < <(stty size 2>/dev/null) || return 0
+  printf '%s %s\n' "$columns" "$rows"
+}
+
+restore() {
+  require_tmux
+  [[ -r "$session_file" ]] || die "no saved session file at $session_file"
+
+  tmux start-server
+
+  local -a dimensions=()
+  local columns rows
+  if read -r columns rows < <(terminal_dimensions); then
+    dimensions=(-x "$columns" -y "$rows")
+  fi
+
+  local session_name window_name directory restored_count=0
+  while IFS=$'\t' read -r session_name window_name directory; do
+    [[ -d "$directory" ]] || continue
+    [[ "$window_name" != "log" && "$window_name" != "man" ]] || continue
+
+    if tmux has-session -t "$session_name" 2>/dev/null; then
+      tmux new-window -d -t "${session_name}:" -n "$window_name" -c "$directory"
+    else
+      tmux new-session -d -s "$session_name" -n "$window_name" -c "$directory" "${dimensions[@]}"
+      ((restored_count += 1))
+    fi
+  done <"$session_file"
+
+  echo "restored $restored_count sessions"
+}
+
+case "${1:-}" in
+save)
+  save
+  ;;
+restore)
+  restore
+  ;;
+*)
+  echo "usage: tmux-session {save|restore}" >&2
+  exit 1
+  ;;
+esac
