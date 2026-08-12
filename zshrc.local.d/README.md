@@ -30,6 +30,8 @@ So: drop a file in `~/.zshrc.local.d/`, open a new shell (or run
 
 ## Examples of what to put here
 
+- `is-linkedin-work-machine` containing `export LINKEDIN_WORK_MACHINE=1`
+  enables the tracked `config/zsh/linkedin.zsh` configuration on a work Mac.
 - Work-specific helpers that reference internal hostnames or APIs
 - Credentials or tokens (better: use a secrets manager, but in a pinch)
 - Per-host quirks you don't want bleeding into your public config

@@ -8,9 +8,10 @@
 #
 #       for f in ${XDG_CONFIG_HOME}/zsh/*; do source $f; done
 #
-#   Every block is guarded by a path/binary check, so this file is safe to keep
-#   in the dotfiles repo even on a non-LinkedIn machine — blocks whose tools
-#   are absent simply no-op.
+#   This file runs only when the machine-local
+#   ~/.zshrc.local.d/is-linkedin-work-machine marker exports
+#   LINKEDIN_WORK_MACHINE=1. This lets the tracked file remain in the repo
+#   without applying LinkedIn Go settings to personal machines.
 #
 # WHY IT EXISTS
 #   Without this file, `go` commands hit the public proxy (proxy.golang.org),
@@ -58,14 +59,20 @@
 #   workspace (observe-ingraphs, observe-grafana-image-renderer, the
 #   grafana-plugin-* MPs) is Native-Go.
 #
-# OPT OUT
-#   Comment out the source line in ~/.zshrc.local or rename this file to
-#   anything not matching `${XDG_CONFIG_HOME}/zsh/*`. No other dotfile
-#   touches LinkedIn-specific paths.
+# MACHINE SETUP
+#   On a LinkedIn work machine, create this local-only marker:
+#
+#       echo 'export LINKEDIN_WORK_MACHINE=1' \
+#         > ~/.zshrc.local.d/is-linkedin-work-machine
+#
+#   The marker is loaded before this file and is never tracked by Git. Remove
+#   it on a personal machine to disable this configuration.
 #
 # SUPPORT
 #   #golang-support on Slack, si-go@linkedin.com, go/supportal/go
 #==============================================================================
+
+[[ "${LINKEDIN_WORK_MACHINE:-}" == "1" ]] || return
 
 # --- 1. LinkedIn CLI tools (golnkd-core, mint, lix-cli, nimbus, ...) on PATH
 [[ -d /usr/local/linkedin/bin ]] && path=(/usr/local/linkedin/bin $path)
@@ -80,6 +87,7 @@ command -v direnv >/dev/null && eval "$(direnv hook zsh)"
 export GOPROXY="gomodproxy.corp.linkedin.com"
 export GOSUMDB="off"
 export GOPRIVATE="*"
+export GONOSUMDB="*"
 export GONOPROXY="none"
 
 # --- 4. Put the newest golnkd-core-managed Go on PATH for scratch work
