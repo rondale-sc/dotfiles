@@ -1,0 +1,107 @@
+{
+  "async arrow": {
+    "prefix": "af",
+    "body": ["async (${1}) => {", "\t$0", "}"],
+    "description": "async (args) => { … }"
+  },
+  "arrow": {
+    "prefix": "fn",
+    "body": ["(${1}) => {", "\t$0", "}"],
+    "description": "(args) => { … }"
+  },
+  "async function": {
+    "prefix": "afn",
+    "body": ["async function ${1:name}(${2}): Promise<${3:void}> {", "\t$0", "}"],
+    "description": "async function name(): Promise<T> { … }"
+  },
+  "try/finally": {
+    "prefix": "tryf",
+    "body": ["try {", "\t$1", "} finally {", "\t$0", "}"],
+    "description": "try { … } finally { … }"
+  },
+  "deferred": {
+    "prefix": "defer",
+    "body": ["const ${1:gate} = Promise.withResolvers<${2:void}>();"],
+    "description": "Promise.withResolvers<T>()"
+  },
+  "abort controller": {
+    "prefix": "abort",
+    "body": ["const ${1:controller} = new AbortController();"],
+    "description": "new AbortController()"
+  },
+  "vitest import": {
+    "prefix": "vit",
+    "body": ["import { afterEach, beforeEach, describe, expect, it, vi } from \"vitest\";"],
+    "description": "import everything from vitest"
+  },
+  "describe": {
+    "prefix": "desc",
+    "body": ["describe(\"${1}\", () => {", "\t$0", "});"],
+    "description": "describe block"
+  },
+  "it": {
+    "prefix": "it",
+    "body": ["it(\"${1}\", () => {", "\t$0", "});"],
+    "description": "sync test"
+  },
+  "it async": {
+    "prefix": "ita",
+    "body": ["it(\"${1}\", async () => {", "\t$0", "});"],
+    "description": "async test"
+  },
+  "it.each": {
+    "prefix": "itt",
+    "body": [
+      "it.each([",
+      "\t[${1:input}, ${2:expected}],",
+      "])(\"${3:%s -> %s}\", (${4:input}, ${5:expected}) => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "table-driven test"
+  },
+  "fake timers": {
+    "prefix": "fake",
+    "body": [
+      "beforeEach(() => vi.useFakeTimers({ now: ${1:0} }));",
+      "afterEach(() => vi.useRealTimers());"
+    ],
+    "description": "fake timers setup/teardown"
+  },
+  "advance timers": {
+    "prefix": "adv",
+    "body": ["await vi.advanceTimersByTimeAsync(${1:ms});"],
+    "description": "advance fake time (async variant)"
+  },
+  "expect rejects around time": {
+    "prefix": "rej",
+    "body": [
+      "const ${1:assertion} = expect(${2:promise}).rejects.toThrow(${3});",
+      "await vi.advanceTimersByTimeAsync(${4:ms});",
+      "await ${1:assertion};"
+    ],
+    "description": "attach rejects BEFORE advancing time"
+  },
+  "vi.fn": {
+    "prefix": "vfn",
+    "body": ["const ${1:fn} = vi.fn(${2:async () => $3});"],
+    "description": "mock function"
+  },
+  "concurrency counter": {
+    "prefix": "peak",
+    "body": [
+      "let active = 0;",
+      "let peak = 0;",
+      "const ${1:task} = async () => {",
+      "\tactive++;",
+      "\tpeak = Math.max(peak, active);",
+      "\ttry {",
+      "\t\t$0",
+      "\t} finally {",
+      "\t\tactive--;",
+      "\t}",
+      "};"
+    ],
+    "description": "active/peak counter for asserting concurrency limits"
+  }
+}
