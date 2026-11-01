@@ -60,7 +60,7 @@ describe("add", () => {
 EOF
 
 printf 'node_modules/\n' > .gitignore
-git init -q
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || git init -q
 
 pnpm add -D typescript vitest @types/node
 pnpm run check
