@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# Scaffold a TypeScript + Vitest scratch project that typechecks and tests green.
+set -euo pipefail
+
+die() {
+  echo "tsnew: $*" >&2
+  exit 1
+}
+
+[[ $# -eq 1 ]] || die "usage: tsnew <dir>"
+dir="$1"
+[[ ! -e "$dir" ]] || die "$dir already exists"
+
+mkdir -p "$dir/src"
+cd "$dir"
+
+cat > package.json <<'EOF'
+{
+  "name": "scratch",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "typecheck": "tsc",
+    "check": "tsc && vitest run"
+  }
+}
+EOF
+
+cat > tsconfig.json <<'EOF'
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",
+    "types": ["node"],
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true
+  }
+}
+EOF
+
+cat > src/example.ts <<'EOF'
+export function add(a: number, b: number): number {
+  return a + b;
+}
+EOF
+
+cat > src/example.test.ts <<'EOF'
+import { describe, expect, it } from "vitest";
+import { add } from "./example.ts";
+
+describe("add", () => {
+  it("adds two numbers", () => {
+    expect(add(1, 2)).toBe(3);
+  });
+});
+EOF
+
+printf 'node_modules/\n' > .gitignore
+git init -q
+
+pnpm add -D typescript vitest @types/node
+pnpm run check
+
+echo
+echo "Ready: cd $dir && pnpm test   (watch mode)"

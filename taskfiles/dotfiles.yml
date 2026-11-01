@@ -63,6 +63,7 @@ tasks:
         - zshrc.local
       BIN_FILES:
         - tmux-session
+        - tsnew
     cmds:
       - for:
           var: FILES
