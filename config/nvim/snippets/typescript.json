@@ -1,53 +1,8 @@
 {
-  "async arrow": {
-    "prefix": "af",
-    "body": ["async (${1}) => {", "\t$0", "}"],
-    "description": "async (args) => { … }"
-  },
-  "arrow": {
-    "prefix": "fn",
-    "body": ["(${1}) => {", "\t$0", "}"],
-    "description": "(args) => { … }"
-  },
-  "async function": {
-    "prefix": "afn",
-    "body": ["async function ${1:name}(${2}): Promise<${3:void}> {", "\t$0", "}"],
-    "description": "async function name(): Promise<T> { … }"
-  },
-  "try/finally": {
-    "prefix": "tryf",
-    "body": ["try {", "\t$1", "} finally {", "\t$0", "}"],
-    "description": "try { … } finally { … }"
-  },
-  "deferred": {
-    "prefix": "defer",
-    "body": ["const ${1:gate} = Promise.withResolvers<${2:void}>();"],
-    "description": "Promise.withResolvers<T>()"
-  },
-  "abort controller": {
-    "prefix": "abort",
-    "body": ["const ${1:controller} = new AbortController();"],
-    "description": "new AbortController()"
-  },
   "vitest import": {
     "prefix": "vit",
     "body": ["import { afterEach, beforeEach, describe, expect, it, vi } from \"vitest\";"],
     "description": "import everything from vitest"
-  },
-  "describe": {
-    "prefix": "desc",
-    "body": ["describe(\"${1}\", () => {", "\t$0", "});"],
-    "description": "describe block"
-  },
-  "it": {
-    "prefix": "it",
-    "body": ["it(\"${1}\", () => {", "\t$0", "});"],
-    "description": "sync test"
-  },
-  "it async": {
-    "prefix": "ita",
-    "body": ["it(\"${1}\", async () => {", "\t$0", "});"],
-    "description": "async test"
   },
   "it.each": {
     "prefix": "itt",
@@ -86,6 +41,16 @@
     "prefix": "vfn",
     "body": ["const ${1:fn} = vi.fn(${2:async () => $3});"],
     "description": "mock function"
+  },
+  "deferred": {
+    "prefix": "defer",
+    "body": ["const ${1:gate} = Promise.withResolvers<${2:void}>();"],
+    "description": "Promise.withResolvers<T>()"
+  },
+  "abort controller": {
+    "prefix": "abort",
+    "body": ["const ${1:controller} = new AbortController();"],
+    "description": "new AbortController()"
   },
   "concurrency counter": {
     "prefix": "peak",
