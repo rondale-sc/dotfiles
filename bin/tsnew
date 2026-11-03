@@ -21,6 +21,7 @@ cat > package.json <<'EOF'
   "type": "module",
   "scripts": {
     "test": "vitest",
+    "debug": "vitest run --inspectBrk --no-file-parallelism --no-isolate --maxWorkers=1 --testTimeout=0 --hookTimeout=0",
     "typecheck": "tsc",
     "check": "tsc && vitest run"
   }
@@ -73,5 +74,11 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || git init -q
 pnpm add -D typescript vitest @types/node
 pnpm run check
 
-echo
-echo "Ready: cd $dir && pnpm test   (watch mode)"
+cat <<EOF
+
+Ready: cd $dir
+  pnpm test                         watch mode
+  pnpm debug [file] [-t "name"]     pause in Chrome DevTools before tests run
+                                    (chrome://inspect → "Open dedicated DevTools for Node";
+                                     leave that window open, it re-attaches every run)
+EOF
