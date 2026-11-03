@@ -42,6 +42,14 @@ cat > tsconfig.json <<'EOF'
 }
 EOF
 
+# Its own config, so tools that search upward (neotest) never pick up a parent
+# project's vitest.config and its include patterns.
+cat > vitest.config.ts <<'EOF'
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({});
+EOF
+
 cat > src/example.ts <<'EOF'
 export function add(a: number, b: number): number {
   return a + b;
