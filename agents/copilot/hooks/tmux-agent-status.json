@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "hooks": {
+    "userPromptSubmitted": [
+      { "type": "command", "command": "\"$HOME/.local/bin/tmux-agent-status\" working", "timeoutSec": 5 }
+    ],
+    "postToolUse": [
+      { "type": "command", "command": "\"$HOME/.local/bin/tmux-agent-status\" resume", "timeoutSec": 5 }
+    ],
+    "agentStop": [
+      { "type": "command", "command": "\"$HOME/.local/bin/tmux-agent-status\" waiting Copilot", "timeoutSec": 5 }
+    ],
+    "notification": [
+      { "type": "command", "command": "\"$HOME/.local/bin/tmux-agent-status\" waiting Copilot", "timeoutSec": 5 }
+    ],
+    "sessionEnd": [
+      { "type": "command", "command": "\"$HOME/.local/bin/tmux-agent-status\" clear", "timeoutSec": 5 }
+    ]
+  }
+}

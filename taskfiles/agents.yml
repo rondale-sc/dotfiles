@@ -145,6 +145,15 @@ tasks:
             ln -sfn "$(realpath ./agents/statusline.sh)" "$CLAUDE_HOME/statusline.sh"
             echo "linked: $CLAUDE_HOME/statusline.sh -> $(realpath ./agents/statusline.sh)"
           fi
+
+          # Copilot CLI hooks (e.g. tmux pane badges via bin/tmux-agent-status)
+          COPILOT_HOOKS_DIR="${COPILOT_HOME:-$HOME/.copilot}/hooks"
+          mkdir -p "$COPILOT_HOOKS_DIR"
+          for hook in ./agents/copilot/hooks/*.json; do
+            [ -f "$hook" ] || continue
+            ln -sfn "$(realpath "$hook")" "$COPILOT_HOOKS_DIR/$(basename "$hook")"
+            echo "linked: $COPILOT_HOOKS_DIR/$(basename "$hook") -> $(realpath "$hook")"
+          done
         silent: true
 
   sync-upstream:

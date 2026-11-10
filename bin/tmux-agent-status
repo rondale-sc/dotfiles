@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# Badge the tmux pane that hosts an AI agent so tmux.conf can show which panes
+# are working or waiting for you. Called from agent hooks (see
+# agents/copilot/hooks/tmux-agent-status.json).
+#
+#   tmux-agent-status working          agent is busy
+#   tmux-agent-status waiting [label]  agent finished or needs input; flashes a
+#                                      message on clients not viewing the pane
+#   tmux-agent-status resume           waiting -> working (after an approval)
+#   tmux-agent-status clear            session ended
+#
+# Sets pane option @agent_state and window option @agent_window_state
+# (waiting wins over working across the window's panes).
+set -u
+
+# Drain the hook payload so the agent never blocks on a full pipe.
+[ -t 0 ] || cat >/dev/null 2>&1 || true
+
+state="${1:-}"
+label="${2:-Agent}"
+pane="${TMUX_PANE:-}"
+
+[ -n "$pane" ] && command -v tmux >/dev/null 2>&1 || exit 0
+[ "$(tmux display-message -p -t "$pane" '#{pane_id}' 2>/dev/null)" = "$pane" ] || exit 0
+
+update_window_state() {
+  local states window_state=""
+  states="$(tmux list-panes -t "$pane" -F '#{@agent_state}' 2>/dev/null)"
+  case "$states" in
+    *waiting*) window_state=waiting ;;
+    *working*) window_state=working ;;
+  esac
+  if [ -n "$window_state" ]; then
+    tmux set-option -w -t "$pane" @agent_window_state "$window_state"
+  else
+    tmux set-option -w -u -t "$pane" @agent_window_state
+  fi
+}
+
+notify_other_clients() {
+  local client client_pane
+  tmux list-clients -F '#{client_name}	#{pane_id}' 2>/dev/null |
+    while IFS=$'\t' read -r client client_pane; do
+      [ "$client_pane" = "$pane" ] && continue
+      tmux display-message -c "$client" -t "$pane" -d 4000 \
+        "#[bold]● $label waiting#[nobold] in #{session_name}:#{window_index}.#{pane_index} (#{window_name})"
+    done
+}
+
+case "$state" in
+  working)
+    tmux set-option -p -t "$pane" @agent_state working
+    ;;
+  resume)
+    [ "$(tmux display-message -p -t "$pane" '#{@agent_state}')" = waiting ] || exit 0
+    tmux set-option -p -t "$pane" @agent_state working
+    ;;
+  waiting)
+    previous="$(tmux display-message -p -t "$pane" '#{@agent_state}')"
+    tmux set-option -p -t "$pane" @agent_state waiting
+    [ "$previous" = waiting ] || notify_other_clients
+    ;;
+  clear)
+    tmux set-option -p -u -t "$pane" @agent_state
+    ;;
+  *)
+    echo "usage: tmux-agent-status working|waiting [label]|resume|clear" >&2
+    exit 2
+    ;;
+esac
+
+update_window_state
+tmux refresh-client -S 2>/dev/null || true
+exit 0

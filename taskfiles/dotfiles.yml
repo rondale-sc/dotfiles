@@ -64,6 +64,7 @@ tasks:
       BIN_FILES:
         - tmux-session
         - tsnew
+        - tmux-agent-status
     cmds:
       - for:
           var: FILES
