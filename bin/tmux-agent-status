@@ -7,7 +7,11 @@
 #   tmux-agent-status waiting [label]  agent finished or needs input; flashes a
 #                                      message on clients not viewing the pane
 #   tmux-agent-status resume           waiting -> working (after an approval)
+#   tmux-agent-status seen             waiting -> cleared (pane got focus)
 #   tmux-agent-status clear            session ended
+#
+# "waiting" acts like an unread marker: it is skipped when a focused client is
+# already viewing the pane, and tmux.conf calls `seen` on pane-focus-in.
 #
 # Sets pane option @agent_state and window option @agent_window_state
 # (waiting wins over working across the window's panes).
@@ -37,6 +41,12 @@ update_window_state() {
   fi
 }
 
+# 0 if a focused client is currently showing this pane.
+pane_is_viewed() {
+  tmux list-clients -F '#{pane_id}	#{client_flags}' 2>/dev/null |
+    awk -F '\t' -v p="$pane" '$1 == p && $2 ~ /focused/ { found = 1 } END { exit !found }'
+}
+
 notify_other_clients() {
   local client client_pane
   tmux list-clients -F '#{client_name}	#{pane_id}' 2>/dev/null |
@@ -56,15 +66,23 @@ case "$state" in
     tmux set-option -p -t "$pane" @agent_state working
     ;;
   waiting)
-    previous="$(tmux display-message -p -t "$pane" '#{@agent_state}')"
-    tmux set-option -p -t "$pane" @agent_state waiting
-    [ "$previous" = waiting ] || notify_other_clients
+    if pane_is_viewed; then
+      tmux set-option -p -u -t "$pane" @agent_state
+    else
+      previous="$(tmux display-message -p -t "$pane" '#{@agent_state}')"
+      tmux set-option -p -t "$pane" @agent_state waiting
+      [ "$previous" = waiting ] || notify_other_clients
+    fi
+    ;;
+  seen)
+    [ "$(tmux display-message -p -t "$pane" '#{@agent_state}')" = waiting ] || exit 0
+    tmux set-option -p -u -t "$pane" @agent_state
     ;;
   clear)
     tmux set-option -p -u -t "$pane" @agent_state
     ;;
   *)
-    echo "usage: tmux-agent-status working|waiting [label]|resume|clear" >&2
+    echo "usage: tmux-agent-status working|waiting [label]|resume|seen|clear" >&2
     exit 2
     ;;
 esac
